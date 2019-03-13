@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Famous Quotes</title>
+<link href='http://fonts.googleapis.com/css?family=Crafty+Girls' rel='stylesheet' type='text/css'>
+<link href='./style.css' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		<h1 class="title font">Famous Quotes</h1>
+		<ul class="nav">
+			<li><a href="#" class="" id="btnGetNewerQuotes">Get Newer Quotes</a></li>
+			<li><a href="#" class="" id="btnSubmitQuote">Submit Quote</a></li>
+			<li><a href="#" class="" id="btnLogin" >Login</a></li>
+			<li class="last"><input type="text" id="searchPhrase" /><a href="#" id="btnSearch">Search</a></li>
+		</ul>
+		<br class="clear">
+	</div>
+	
+	<div id="single" class="highlight">
+	</div>
+	
+	<div id="content">
+		<div id="login" class="hide">
+		<form method="post" action="login.php">
+		<ul class="thirds">
+			<li>
+				<label for="username">Login Name</label>
+				<input type="text" name="username" id="username">
+			</li>
+			<li>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password">
+			</li>
+			<li>
+				<input type="submit" name="submitLogin" id="submitLogin" value="Login" class="submit">
+			</li>
+		</ul>
+		<br class="clear">
+		</form>
+		</div>
+		<div id="addQuote" class="hide">
+		<form method="post" action="quote-add.php">
+		<ul>
+			<li class="full">
+				<label for="quotetext">Famous Quote</label>
+				<textarea name="quotetext" id="quotetext" cols="45" rows="5"></textarea>
+			</li>
+			<li>
+				<label for="author">Quote From</label>
+				<input type="text" name="author" id="author">
+			</li>
+			<li>
+				<label for="tags">Tags</label>
+				<input type="text" name="tags" id="tags">
+			</li>
+			<li>
+				<input type="submit" name="submitQuote" id="submitQuote" value="Add" class="submit">
+			</li>
+		</ul>
+		<br class="clear">
+		</form>
+		</div>
+		<div id="quotes"></div>
+	</div>
+	<div id="footer"></div>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+var loggedIn = false;
+$(document).ready(function() {
+	$('#btnLogin').on('click', function() {
+		$('#login').slideDown();
+	});
+	
+	$('#btnSubmitQuote').on('click', function() {
+		if(loggedIn == true) {
+			$('#addQuote').slideDown();
+		} else {
+			alert('You must be logged in to access this functionality.');
+		}
+	});
+	
+	
+	setInterval(function() { $('#single').load('quote-get-single.php'); }, 30000);
+	$('#single').load('quote-get-single.php'); 
+	
+	$('#submitLogin').on('click', function() {
+		$.post(
+			'login.php', 
+			{ 
+				'u': $('#username').val(), 
+				'p' : $('#password').val()
+			},
+			function(data) {
+				if(data == 'success') {
+					alert('You have been logged in.');
+					loggedIn = true;
+					$('#login').slideUp();
+				} else {
+					alert('You did not login to the server.');
+					loggedIn = false;
+				}
+			});
+		return false;
+	});
+	
+	$('#submitQuote').on('click', function() {
+		var ready = true;
+		var qt = $('#quotetext').val();
+		if( qt.length < 10 ) {
+			ready = false;
+			alert('You must provide some text to submit for the quote.');
+		}
+		if($('#author').val() == '') {
+			ready = false;
+			alert('You must provide the author.');
+		}
+		if(ready == true) {
+			$.post(
+				'quote-add.php',
+				{
+					'quotetext': $('#quotetext').val(),
+					'tags': $('#tags').val(),
+					'author': $('#author').val()
+				}, 
+				function (data) {
+					if(data == "success") {
+						alert("Your quote was added");
+					} else {
+						var msg = data.split("-");
+						if(msg[0] == "fail") {
+							alert(msg[1]);
+						}
+					}
+				});
+			}
+			return false;
+	});
+	
+	$('#btnGetNewerQuotes').on('click', function() {
+		loadJSON();
+	});
+	
+	$('#btnSearch').on('click', function() {
+		performSearch();
+	});
+	
+	$('#searchPhrase').on('keypress', function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			performSearch();
+		}
+	});
+	
+	
+});
+
+var quoteIndex = 0;
+function loadJSON() {
+	$.get(
+		'quote-get-list-json.php',
+		{'start' : quoteIndex},
+		function(data) {
+			
+			var str = buildQuoteDisplay(data);
+			
+			$('#quotes').prepend(str);
+			quoteIndex += 5;
+		}
+	);
+}
+
+
+function buildQuoteDisplay(quotesStr) {
+	var data = $.parseJSON(quotesStr);
+	var str = '';
+	for( quote in data.quotes) {
+		var myQuote = data.quotes[quote];
+		str += '<div><p class="quote">' + myQuote.quotetext + '</p>';
+		if(myQuote.tags.length > 0) {
+			str += '<p class="tags">tags: ';
+			for( tag in myQuote.tags ) {
+				str += '<span>' + myQuote.tags[tag] + '</span>';
+			
+				if(tag < myQuote.tags.length - 1) {
+					str += ', ';
+				}
+			}
+			str += '</p>';
+		}
+		str += '<p class="author">' +
+			myQuote.author + '</p><p class="clear">&nbsp;</p></div>';
+	}
+	
+	return str;
+}
+
+function performSearch() {
+}
+</script>
+</body>
+</html>

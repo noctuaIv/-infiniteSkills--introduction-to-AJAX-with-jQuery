@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Famous Quotes</title>
+<link href='http://fonts.googleapis.com/css?family=Crafty+Girls' rel='stylesheet' type='text/css'>
+<link href='./style.css' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		<h1 class="title font">Famous Quotes</h1>
+		<ul class="nav">
+			<li><a href="#" class="" id="btnSubmitQuote">Submit Quote</a></li>
+			<li><a href="#" class="" id="btnLogin" >Login</a></li>
+		</ul>
+		<br class="clear">
+	</div>
+	
+	<div id="single" class="highlight">
+	</div>
+	
+	<div id="content">
+		<div id="login" class="hide">
+		<form method="post" action="login.php">
+		<ul class="thirds">
+			<li>
+				<label for="username">Login Name</label>
+				<input type="text" name="username" id="username">
+			</li>
+			<li>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password">
+			</li>
+			<li>
+				<input type="submit" name="submitLogin" id="submitLogin" value="Login" class="submit">
+			</li>
+		</ul>
+		<br class="clear">
+		</form>
+		</div>
+		<div id="addQuote" class="hide">
+		<form method="post" action="quote-add.php">
+		<ul>
+			<li class="full">
+				<label for="quotetext">Famous Quote</label>
+				<textarea name="quotetext" id="quotetext" cols="45" rows="5"></textarea>
+			</li>
+			<li>
+				<label for="author">Quote From</label>
+				<input type="text" name="author" id="author">
+			</li>
+			<li>
+				<label for="tags">Tags</label>
+				<input type="text" name="tags" id="tags">
+			</li>
+			<li>
+				<input type="submit" name="submitQuote" id="submitQuote" value="Add" class="submit">
+			</li>
+		</ul>
+		<br class="clear">
+		</form>
+		</div>
+		<div id="quotes"></div>
+	</div>
+	<div id="footer"></div>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+var loggedIn = false;
+$(document).ready(function() {
+	loadHTML();
+	
+});
+
+function loadHTML() {
+	$.get(
+		'quote-get-list-html.php',
+		function (data) {
+			$('#quotes').html(data);
+		}
+	);
+}
+</script>
+</body>
+</html>

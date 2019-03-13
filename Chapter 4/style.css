@@ -1,0 +1,121 @@
+body, input, textarea {
+	font-family: Tahoma, Geneva, sans-serif;
+}
+#container {
+	min-width: 400px;
+	max-width: 1000px;
+	margin: auto;
+	padding: 10px;
+}
+#content {
+	clear: both;
+	padding: 5px;
+}
+.hide {
+	display: none;
+}
+.font {
+	font-family: 'Crafty Girls', cursive;
+}
+.title {
+	text-align: center;
+	font-size: 2.5em;
+}
+li label {
+	width: 105px;
+	margin-right: 10px;
+	text-align: right;
+	display: inline-block;
+}
+form {
+	clear: both;
+	padding: 10px;
+	border-radius: 10px;
+	border: 1px solid #333;
+	background-color: #f3f3f3;
+}
+form li {
+	width: 25%;
+	list-style: none;
+	float: left;
+}
+li.full {
+	width: 100%;
+}
+.full textarea {
+	width: 58%;
+	height: 48px;
+}
+
+.submit {
+	margin-left: 25px;
+	width: 25%;
+}
+.nav {
+	padding: 0;
+	margin: 0 5px;
+}
+.nav li {
+	display: inline-block;
+	list-style: none;
+	float: left;
+	margin-right: 10px;
+}
+.nav li.last {
+	float: right;
+}
+.nav li.last a {
+	float: right;
+}
+.nav li a, .nav li a:visited {
+	text-decoration: none;
+	font-weight: bold;
+	padding: 5px;
+	display: block;
+	background: #CCC;
+	border: 1px solid #333;
+	border-radius: 10px;
+	color: #009;
+}
+.clear {
+	height: 1px;
+	overflow: hidden;
+	clear: both;
+	margin: 0;
+	padding: 0;
+}
+#quotes div {
+	border: 1px solid #aaa;
+	clear: both;
+	padding: 5px;
+	margin: 5px 0;
+	border-radius: 5px;
+}
+.author, .tags {
+	width: 48%;
+	margin-top: -5px;
+	font-size: .9em;
+}
+.author {
+	text-align:right;
+	font-style:italic;
+	float: right;
+}
+.tags {
+	float: left;
+}
+.tags span:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.highlight {
+	border: 1px solid #333;
+	background-color: #f3f3f3;
+	padding: 5px;
+	margin: 10px 5px;
+	border-radius: 5px;
+}
+p {
+	padding: 0;
+	margin: 5px;
+}
